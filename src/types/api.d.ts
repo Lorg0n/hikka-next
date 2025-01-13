@@ -1,4 +1,4 @@
-export {};
+export { };
 
 declare global {
     namespace API {
@@ -468,11 +468,11 @@ declare global {
 
         type History<
             TData =
-                | HistoryWatchData
-                | HistoryFavoriteData
-                | HistoryWatchImportData
-                | HistoryReadImportData
-                | HistoryReadData,
+            | HistoryWatchData
+            | HistoryFavoriteData
+            | HistoryWatchImportData
+            | HistoryReadImportData
+            | HistoryReadData,
         > = {
             reference: string;
             content?: API.Anime | API.Manga | API.Novel;
@@ -569,14 +569,14 @@ declare global {
 
         type Notification<
             TData =
-                | NotificationCommentData
-                | NotificationCommentVoteData
-                | NotificationEditData
-                | NotificationHikkaData
-                | NotificationScheduleAnimeData
-                | NotificationVoteData
-                | NotificationFollowData
-                | NotificationThirdpartyLoginData,
+            | NotificationCommentData
+            | NotificationCommentVoteData
+            | NotificationEditData
+            | NotificationHikkaData
+            | NotificationScheduleAnimeData
+            | NotificationVoteData
+            | NotificationFollowData
+            | NotificationThirdpartyLoginData,
         > = {
             notification_type: NotificationType;
             created: number;
@@ -646,6 +646,15 @@ declare global {
         type ClientInfo = Client & {
             secret: string;
             endpoint: string;
+        };
+
+        type AuthToken = {
+            reference: string;
+            created: number;
+            client: API.Client;
+            scope: string[];
+            expiration: number;
+            used: integer | null;
         };
     }
 }

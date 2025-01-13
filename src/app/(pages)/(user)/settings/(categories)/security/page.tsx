@@ -3,6 +3,7 @@ import { FC } from 'react';
 import P from '@/components/typography/p';
 import Header from '@/components/ui/header';
 
+import AuthTokens from '@/features/settings/security/auth-tokens.component';
 import Email from '@/features/settings/security/email.component';
 import Password from '@/features/settings/security/password.component';
 
@@ -29,6 +30,10 @@ const SecuritySettingsPage: FC<Props> = async (props) => {
             <div className="flex flex-col gap-4">
                 <Header variant="h4" title="Пароль" />
                 <Password />
+            </div>
+            <div className="flex flex-col gap-4">
+                <Header variant="h4" title="Авторизовані застосунки" />
+                <AuthTokens />
             </div>
         </div>
     );
