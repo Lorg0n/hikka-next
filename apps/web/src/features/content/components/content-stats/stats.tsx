@@ -23,7 +23,7 @@ const Stats: FC<Props> = ({ stats }) => {
                 {stats.map((stat) => {
                     return (
                         <Tooltip
-                            key={`${stat.value}-${stat.percentage}`}
+                            key={`${stat.value}-${stat.percentage}-${stat.name}`}
                             delayDuration={0}
                         >
                             <TooltipTrigger asChild>
@@ -39,7 +39,7 @@ const Stats: FC<Props> = ({ stats }) => {
                                                 className={cn(
                                                     'absolute bottom-0 left-0 size-full bg-primary-foreground/10',
                                                     !!stat.name &&
-                                                        `bg-${stat.name}`,
+                                                    `bg-${stat.name}`,
                                                 )}
                                             />
                                             <div
@@ -49,7 +49,7 @@ const Stats: FC<Props> = ({ stats }) => {
                                                 className={cn(
                                                     'absolute bottom-0 left-0 flex h-2 w-full items-end justify-center bg-primary-foreground',
                                                     !!stat.name &&
-                                                        `bg-${stat.name}-foreground`,
+                                                    `bg-${stat.name}-foreground`,
                                                 )}
                                             ></div>
                                         </div>
