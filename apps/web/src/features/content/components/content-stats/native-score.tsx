@@ -10,6 +10,7 @@ import P from '@/components/typography/p';
 import Card from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { CONTENT_CONFIG } from '@/utils/constants/common';
+import { cn } from '@/utils/utils';
 
 const ScoreDetailItem: FC<{
     title: string;
@@ -42,13 +43,22 @@ const NativeScore: FC<Props> = ({ content_type }) => {
         return null;
     }
 
+    const getScoreColorClass = (score: number) => {
+        if (score >= 8.0) return 'text-success-foreground';
+        if (score >= 6.0) return 'text-info-foreground';
+        if (score >= 5.0) return 'text-warning-foreground';
+        return 'text-destructive-foreground';
+    };
+
+    const scoreColorClass = getScoreColorClass(data.native_score);
+
     return (
         <Card className="flex flex-col gap-3 bg-secondary/20 p-4 backdrop-blur">
             <ScoreDetailItem
                 title="Середня оцінка"
                 icon={<Star className="size-4" />}
             >
-                <P className="text-sm font-medium">
+                <P className={cn('text-sm font-medium', scoreColorClass)}>
                     {data.native_score.toFixed(2)}
                 </P>
             </ScoreDetailItem>
