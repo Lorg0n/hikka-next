@@ -56,7 +56,7 @@ const NativeScore: FC<Props> = ({ content_type }) => {
         <Card className="flex flex-col gap-3 bg-secondary/20 p-4 backdrop-blur">
             <ScoreDetailItem
                 title="Середня оцінка"
-                icon={<Star className="size-4" />}
+                icon={<Star className="size-4 shrink-0" />}
             >
                 <P className={cn('text-sm font-medium', scoreColorClass)}>
                     {data.native_score.toFixed(2)}
@@ -65,7 +65,7 @@ const NativeScore: FC<Props> = ({ content_type }) => {
 
             <ScoreDetailItem
                 title="Всього оцінок"
-                icon={<BarChart className="size-4" />}
+                icon={<BarChart className="size-4 shrink-0" />}
             >
                 <NumericFormat
                     value={data.native_scored_by}

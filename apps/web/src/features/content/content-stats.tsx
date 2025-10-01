@@ -44,23 +44,21 @@ const ContentStats = ({ content_type }: Props) => {
                         }}
                         size="badge"
                     >
-                        <ToggleGroupItem value="native" aria-label="Native">
-                            Власна
-                        </ToggleGroupItem>
                         <ToggleGroupItem value="mal" aria-label="MAL">
                             MAL
+                        </ToggleGroupItem>
+                        <ToggleGroupItem value="native" aria-label="Native">
+                            Власна
                         </ToggleGroupItem>
                     </ToggleGroup>
                 </HeaderContainer>
                 <HeaderNavButton />
             </Header>
 
-            {/* Render Hikka's simple score display */}
             {source === 'native' && (
                 <NativeScore content_type={content_type} />
             )}
 
-            {/* Render MAL's detailed stats with tabs */}
             {source === 'mal' && (
                 <Tabs defaultValue={listTabValue}>
                     <TabsList className="grid w-full grid-cols-2">
@@ -70,7 +68,6 @@ const ContentStats = ({ content_type }: Props) => {
                         <TabsTrigger value="score">Оцінки</TabsTrigger>
                     </TabsList>
 
-                    {/* Content for MAL "In Lists" tab */}
                     {content_type !== ContentTypeEnum.ANIME && (
                         <TabsContent value="readlist">
                             <Readlist
@@ -88,7 +85,6 @@ const ContentStats = ({ content_type }: Props) => {
                         </TabsContent>
                     )}
 
-                    {/* Content for MAL "Scores" tab */}
                     <TabsContent value="score">
                         <Score content_type={content_type} />
                     </TabsContent>
