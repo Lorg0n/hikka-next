@@ -38,6 +38,18 @@ const SORT_CONTENT = [
         value: 'score',
     },
     {
+        label: 'Кількість оцінок',
+        value: 'scored_by',
+    },
+    {
+        label: 'Локальна оцінка',
+        value: 'native_score',
+    },
+    {
+        label: 'Кількість локальних оцінок',
+        value: 'native_scored_by',
+    },
+    {
         label: 'Дата релізу',
         value: 'start_date',
     },

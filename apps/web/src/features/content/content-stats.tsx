@@ -63,7 +63,7 @@ const ContentStats = ({ content_type }: Props) => {
                         </ToggleGroupItem>
                         {hasNativeData && (
                             <ToggleGroupItem value="native" aria-label="Native">
-                                Власна
+                                Локальна
                             </ToggleGroupItem>
                         )}
                     </ToggleGroup>
