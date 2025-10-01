@@ -1,6 +1,8 @@
 'use client';
 
 import { ContentTypeEnum } from '@hikka/client';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 import Block from '@/components/ui/block';
 import {
@@ -11,7 +13,7 @@ import {
 } from '@/components/ui/header';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { useState } from 'react';
+import { CONTENT_CONFIG } from '@/utils/constants/common';
 
 import NativeScore from './components/content-stats/native-score';
 import Readlist from './components/content-stats/readlist';
@@ -27,9 +29,21 @@ interface Props {
 
 const ContentStats = ({ content_type }: Props) => {
     const [source, setSource] = useState<'native' | 'mal'>('mal');
+    const params = useParams();
+
+    const { data } = CONTENT_CONFIG[content_type].useInfo(String(params.slug));
+
+    const hasNativeData = !!(data && data.native_score && data.native_scored_by);
 
     const listTabValue =
         content_type === ContentTypeEnum.ANIME ? 'watchlist' : 'readlist';
+
+    useEffect(() => {
+        if (!hasNativeData && source === 'native') {
+            setSource('mal');
+        }
+    }, [hasNativeData, source]);
+
 
     return (
         <Block>
@@ -47,16 +61,18 @@ const ContentStats = ({ content_type }: Props) => {
                         <ToggleGroupItem value="mal" aria-label="MAL">
                             MAL
                         </ToggleGroupItem>
-                        <ToggleGroupItem value="native" aria-label="Native">
-                            Власна
-                        </ToggleGroupItem>
+                        {hasNativeData && (
+                            <ToggleGroupItem value="native" aria-label="Native">
+                                Власна
+                            </ToggleGroupItem>
+                        )}
                     </ToggleGroup>
                 </HeaderContainer>
                 <HeaderNavButton />
             </Header>
 
-            {source === 'native' && (
-                <NativeScore content_type={content_type} />
+            {source === 'native' && hasNativeData && (
+                <NativeScore data={data} />
             )}
 
             {source === 'mal' && (

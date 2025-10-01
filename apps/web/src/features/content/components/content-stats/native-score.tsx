@@ -1,16 +1,18 @@
 'use client';
 
-import { ContentTypeEnum } from '@hikka/client';
 import { BarChart, Star } from 'lucide-react';
-import { useParams } from 'next/navigation';
 import { FC, ReactNode } from 'react';
 import { NumericFormat } from 'react-number-format';
 
 import P from '@/components/typography/p';
 import Card from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { CONTENT_CONFIG } from '@/utils/constants/common';
 import { cn } from '@/utils/utils';
+
+interface NativeData {
+    native_score: number | null;
+    native_scored_by: number | null;
+}
 
 const ScoreDetailItem: FC<{
     title: string;
@@ -29,16 +31,10 @@ const ScoreDetailItem: FC<{
 };
 
 interface Props {
-    content_type:
-    | ContentTypeEnum.ANIME
-    | ContentTypeEnum.MANGA
-    | ContentTypeEnum.NOVEL;
+    data: NativeData | undefined;
 }
 
-const NativeScore: FC<Props> = ({ content_type }) => {
-    const params = useParams();
-    const { data } = CONTENT_CONFIG[content_type].useInfo(String(params.slug));
-
+const NativeScore: FC<Props> = ({ data }) => {
     if (!data || !data.native_score || !data.native_scored_by) {
         return null;
     }
