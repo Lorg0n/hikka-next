@@ -11,6 +11,7 @@ trigger:
 services:
   - name: docker
     image: docker:dind
+    privileged: true
 
 steps:
   - name: build-and-save-image
