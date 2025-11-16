@@ -8,7 +8,6 @@ trigger:
   event:
     - push
 
-
 services:
   - name: docker
     image: docker:dind
@@ -16,8 +15,10 @@ services:
 steps:
   - name: build-and-save-image
     image: docker:latest
+    environment:
+      DOCKER_HOST: tcp://docker:2375
     commands:
-      - sleep 15
+      - until docker info; do echo "waiting for docker daemon..."; sleep 1; done
       - docker build -f Dockerfile.prod -t hikka-dev:latest .
       - docker save hikka-dev:latest -o hikka-dev-image.tar
 
