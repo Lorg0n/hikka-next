@@ -12,13 +12,22 @@ services:
   - name: docker
     image: docker:dind
     privileged: true
-    command: ["--host=tcp://0.0.0.0:2375", "--tls=false"]
+    volumes:
+      - name: dockersock
+        path: /var/run
+
+volumes:
+  - name: dockersock
+    temp: {}
 
 steps:
   - name: build-and-deploy
     image: docker:latest
+    volumes:
+      - name: dockersock
+        path: /var/run
     environment:
-      DOCKER_HOST: tcp://docker:2375
+      DOCKER_HOST: unix:///var/run/docker.sock
       DEV_SERVER_HOST:
         from_secret: DEV_SERVER_HOST
       DEV_SERVER_USER:
@@ -26,7 +35,8 @@ steps:
       DEV_SERVER_PASSWORD:
         from_secret: DEV_SERVER_PASSWORD
     commands:
-      - until docker info; do echo "waiting for docker daemon..."; sleep 1; done
+      - sleep 5
+      - for i in $(seq 1 30); do docker info && break || sleep 2; done
       - docker build -f Dockerfile.prod -t hikka-dev:latest .
       - docker save hikka-dev:latest -o hikka-dev-image.tar
       - apk add --no-cache openssh-client sshpass
@@ -37,6 +47,6 @@ steps:
         docker load -i /tmp/hikka-dev-image.tar
         docker stop hikka-dev-container || true
         docker rm hikka-dev-container || true
-        docker run -d --restart always --name hikka-dev-container -p 3001:3000 hikka-dev:latest
+        docker run -d --restart always --name hikka-dev-container -p 1203:3000 hikka-dev:latest
         rm /tmp/hikka-dev-image.tar
         EOF
