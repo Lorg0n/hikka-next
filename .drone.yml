@@ -8,6 +8,7 @@ trigger:
   event:
     - push
 
+
 services:
   - name: docker
     image: docker:dind
