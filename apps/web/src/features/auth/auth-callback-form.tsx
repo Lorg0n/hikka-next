@@ -55,7 +55,7 @@ const AuthCallbackForm = () => {
                 await setCookie('auth', data.hikkaSecret);
 
                 // Set the client auth token
-                client.setAuthToken(data.secret);
+                client.setAuthToken(data.hikkaSecret);
 
                 // Redirect to the callback URL or home
                 router.push(validateRedirectUrl(callbackUrl));
