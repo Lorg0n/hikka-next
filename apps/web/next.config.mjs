@@ -38,6 +38,15 @@ const nextConfig = {
             },
         ];
     },
+
+    async rewrites() {
+        return [
+            {
+                source: '/api/proxy/:path*',
+                destination: 'https://api.hikka.io/:path*', 
+            },
+        ];
+    },
 };
 
 const withBundleAnalyzer = bundleAnalyzer({

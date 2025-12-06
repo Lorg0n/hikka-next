@@ -90,18 +90,6 @@ const AuthCallbackForm = () => {
                     {error}
                 </div>
             )}
-
-            {!isLoading && !error && reference && (
-                <div className="rounded-md bg-primary/10 border border-primary/20 p-3 text-primary">
-                    Обробка запиту авторизації з reference: {reference}
-                </div>
-            )}
-
-            {!isLoading && !error && !reference && (
-                <div className="rounded-md bg-warning/10 border border-warning/20 p-3 text-warning">
-                    Будь ласка, поверніться до попередньої сторінки та спробуйте ще раз.
-                </div>
-            )}
         </div>
     );
 };
