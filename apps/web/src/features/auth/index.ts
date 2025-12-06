@@ -1,3 +1,5 @@
+export { default as AuthCallbackForm } from './auth-callback-form';
+export { default as AuthCallbackHeader } from './auth-callback-header';
 export { default as ForgotPasswordForm } from './forgot-password-form';
 export { default as ForgotPasswordHeader } from './forgot-password-header';
 export { default as LoginForm } from './login-form';
@@ -7,3 +9,4 @@ export { default as PasswordConfirmForm } from './password-confirm-form';
 export { default as PasswordConfirmHeader } from './password-confirm-header';
 export { default as SignupForm } from './signup-form';
 export { default as SignupHeader } from './signup-header';
+
