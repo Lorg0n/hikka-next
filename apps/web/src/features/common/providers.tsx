@@ -16,7 +16,7 @@ import ThemeProvider from '@/services/providers/theme-provider';
 import { useSettingsStore } from '@/services/stores/settings-store';
 import { getCookie } from '@/utils/cookies';
 
-interface Props extends PropsWithChildren {}
+interface Props extends PropsWithChildren { }
 
 const Providers: FC<Props> = ({ children }) => {
     const settings = useSettingsStore();
@@ -38,6 +38,11 @@ const Providers: FC<Props> = ({ children }) => {
             (authToken) =>
                 authToken &&
                 setApiClientConfig((config) => ({ ...config, authToken })),
+        );
+        getCookie('forge').then(
+            (forgeToken) =>
+                forgeToken &&
+                setApiClientConfig((config) => ({ ...config, forgeToken })),
         );
     }, []);
 

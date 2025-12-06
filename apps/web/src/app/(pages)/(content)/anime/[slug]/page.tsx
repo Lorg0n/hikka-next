@@ -26,6 +26,7 @@ import { Followings } from '@/features/modals';
 
 import getHikkaClientConfig from '@/utils/get-hikka-client-config';
 
+import Similar from '@/features/content/similar';
 import jsonSchema from './anime.schema';
 
 interface Props {
@@ -84,6 +85,7 @@ const AnimePage: FC<Props> = async (props) => {
                 <Franchise content_type={ContentTypeEnum.ANIME} />
                 <Media />
                 <Staff content_type={ContentTypeEnum.ANIME} />
+                <Similar content_type={ContentTypeEnum.ANIME} />
             </div>
 
             <div className="flex flex-col gap-12 lg:col-span-1">

@@ -47,15 +47,17 @@ const AuthCallbackForm = () => {
 
                 const data: AuthResponse = await response.json();
 
-                if (!data.hikkaSecret) {
+                if (!data.hikkaSecret || !data.secret) {
                     throw new Error('Недійсний відповідь від сервера');
                 }
 
                 // Set the auth cookie
                 await setCookie('auth', data.hikkaSecret);
+                await setCookie('forge', data.secret);
 
                 // Set the client auth token
                 client.setAuthToken(data.hikkaSecret);
+                client.setForgeToken(data.secret);
 
                 // Redirect to the callback URL or home
                 router.push(validateRedirectUrl(callbackUrl));

@@ -31,6 +31,7 @@ import { WatchModule } from './modules/watch';
 export interface HikkaClientConfig {
     baseUrl?: string;
     authToken?: string;
+    forgeToken?: string;
     cacheControl?: {
         defaultMaxAge?: number;
         byPath?: Record<string, number>;
@@ -44,6 +45,7 @@ export interface HikkaClientConfig {
 export class HikkaClient {
     private baseUrl: string;
     private authToken?: string;
+    private forgeToken?: string;
     private cacheControl?: {
         defaultMaxAge?: number;
         byPath?: Record<string, number>;
@@ -82,6 +84,7 @@ export class HikkaClient {
     constructor(config: HikkaClientConfig) {
         this.baseUrl = config.baseUrl || API_HOST;
         this.authToken = config.authToken;
+        this.forgeToken = config.forgeToken;
         this.cacheControl = config.cacheControl;
 
         // Initialize modules
@@ -122,17 +125,33 @@ export class HikkaClient {
     }
 
     /**
+     * Set the authentication token for Forge's API requests
+     */
+    public setForgeToken(token: string): void {
+        this.forgeToken = token;
+    }
+
+    /**
      * Clear the authentication token
      */
     public clearAuthToken(): void {
         this.authToken = undefined;
     }
 
+    public clearForgeToken(): void {
+        this.forgeToken = undefined;
+    }
+
+
     /**
      * Get the current auth token
      */
     public getAuthToken(): string | undefined {
         return this.authToken;
+    }
+
+    public getForgeToken(): string | undefined {
+        return this.forgeToken;
     }
 
     /**
@@ -226,6 +245,11 @@ export class HikkaClient {
             headers['auth'] = this.authToken;
         }
 
+        // Add auth token if available
+        if (this.forgeToken) {
+            headers['forge'] = this.forgeToken;
+        }
+
         // Apply cache control headers for GET requests
         if (method === 'GET' && this.cacheControl) {
             const cacheHeaders = this.getCacheControlHeaders(path);
@@ -268,7 +292,7 @@ export class HikkaClient {
             const errorData = await response.json().catch(() => null);
             throw new HikkaApiError(
                 errorData?.message ||
-                    `API request failed with status ${response.status}`,
+                `API request failed with status ${response.status}`,
                 response.status,
                 errorData?.code || 'unknown_error',
                 errorData,

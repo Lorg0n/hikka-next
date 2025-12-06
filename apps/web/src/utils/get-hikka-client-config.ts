@@ -9,6 +9,7 @@ export const createHikkaClientConfig = async (
     return {
         baseUrl: process.env.API_URL || process.env.NEXT_PUBLIC_API_URL,
         authToken: await getCookie('auth'),
+        forgeToken: await getCookie('forge'),
         ...config,
     };
 };
