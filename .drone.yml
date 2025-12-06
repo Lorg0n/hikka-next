@@ -1,0 +1,66 @@
+kind: pipeline
+type: docker
+name: deploy-dev
+
+trigger:
+  branch:
+    - prod
+  event:
+    - tag
+
+services:
+  - name: docker
+    image: docker:dind
+    privileged: true
+    volumes:
+      - name: dockersock
+        path: /var/run
+
+volumes:
+  - name: dockersock
+    temp: {}
+
+steps:
+  - name: build-and-deploy
+    image: docker:latest
+    volumes:
+      - name: dockersock
+        path: /var/run
+    environment:
+      DOCKER_HOST: unix:///var/run/docker.sock
+      DEV_SERVER_HOST:
+        from_secret: DEV_SERVER_HOST
+      DEV_SERVER_USER:
+        from_secret: DEV_SERVER_USER
+      DEV_SERVER_PASSWORD:
+        from_secret: DEV_SERVER_PASSWORD
+    commands:
+      - sleep 5
+      - for i in $(seq 1 30); do docker info && break || sleep 2; done
+
+      - docker build -f Dockerfile.prod -t hikka-dev:latest .
+
+      - docker save hikka-dev:latest -o hikka-dev-image.tar
+
+      - apk add --no-cache openssh-client sshpass
+
+      - export SSHPASS=$DEV_SERVER_PASSWORD
+      - sshpass -e scp -o StrictHostKeyChecking=no hikka-dev-image.tar $DEV_SERVER_USER@$DEV_SERVER_HOST:/tmp/
+
+      - |
+        sshpass -e ssh -o StrictHostKeyChecking=no $DEV_SERVER_USER@$DEV_SERVER_HOST << 'EOF'
+          echo "Loading image..."
+          docker load -i /tmp/hikka-dev-image.tar
+          
+          echo "Restarting container..."
+          docker stop hikka-dev-container || true
+          docker rm hikka-dev-container || true
+          
+          # Запуск на порту 1203 (внешний) -> 3000 (внутренний Next.js)
+          docker run -d --restart always --name hikka-dev-container -p 1203:3000 hikka-dev:latest
+          
+          echo "Cleaning up..."
+          rm /tmp/hikka-dev-image.tar
+          # Удаляем старые неиспользуемые образы, чтобы не забить диск
+          docker image prune -f
+        EOF
