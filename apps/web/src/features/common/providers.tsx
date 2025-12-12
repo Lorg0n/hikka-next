@@ -75,7 +75,6 @@ const Providers: FC<Props> = ({ children }) => {
                         />
 
                         {children}
-                        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
                     </ModalProvider>
                 </TooltipProvider>
             </ThemeProvider>

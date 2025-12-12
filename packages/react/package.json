@@ -45,6 +45,7 @@
     "dependencies": {
         "@hikka/client": "workspace:*",
         "@tanstack/react-query": "5.76.1",
+        "@tanstack/react-query-devtools": "5.76.1",
         "react-intersection-observer": "9.16.0"
     },
     "devDependencies": {
@@ -59,7 +60,7 @@
         "react-dom": "19.1.0",
         "rimraf": "^5.0.1",
         "ts-jest": "^29.1.2",
-        "tsup": "^8.4.0"
+        "tsup": "^8.5.1"
     },
     "keywords": [
         "hikka",
